@@ -1,0 +1,85 @@
+﻿@model twright_FinacialPortal.ViewModels.UserViewModel
+@{
+    ViewBag.Title = "EditProfile";
+}
+
+<h2>Edit Profile</h2>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="">
+                <div class="card-body">
+                    @using (Html.BeginForm("EditProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.ProfilePic)
+                        @Html.HiddenFor(model => model.Id)
+                        <div class="row">
+                            <div class="col-md-4 pl-1">
+                                <div class="form-group">
+                                    @Html.Label("Email")
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 pr-1">
+                                <div class="form-group">
+                                    @Html.Label("First Name")
+                                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-1">
+                                <div class="form-group">
+                                    @Html.Label("Last Name")
+                                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6 pl-1">
+                                <div class="form-group">
+                                    @Html.Label("Nickname")
+                                    @Html.TextBoxFor(model => model.Nickname, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="now-ui-icons media-1_camera-compact"></i>
+                                        </div>
+                                    </div>
+                                    <input type="file" name="Avatar" class="form-control" placeholder="Upload Avatar">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+
+                                @if (Model.ProfilePic != null)
+                                {
+                                    <img class="img-fluid" src="@Url.Content(Model.ProfilePic)" />
+                                }
+
+                            </div>
+
+
+
+                        </div>
+                        <br />
+                        <br />
+
+                        <div class="col-md-4 px-1">
+                            <button type="submit" class="btn btn-primary btn-round">Save Changes</button>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,252 @@
+﻿@using twright_FinacialPortal.Models
+@model LoginViewModel
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="~/favicon.png">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="bootstrap material admin template">
+    <meta name="author" content="">
+
+    <title>Financial Portal | TWright</title>
+
+    <link rel="apple-touch-icon" href="~/Images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="~/Images/favicon.ico">
+    <link rel="icon" type="image/png" href="~/favicon.png">
+
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/bootstrap-extend.min.css">
+    <link rel="stylesheet" href="~/Content/site.min.css">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="~/Content/animsition.css">
+    <link rel="stylesheet" href="~/Content/asScrollable.css">
+    <link rel="stylesheet" href="~/Content/switchery.css">
+    <link rel="stylesheet" href="~/Content/introjs.css">
+    <link rel="stylesheet" href="~/Content/slidePanel.css">
+    <link rel="stylesheet" href="~/Content/flag-icon.css">
+    <link rel="stylesheet" href="~/Content/waves.css">
+    <link rel="stylesheet" href="~/Content/login-v2.css">
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="~/Content/material-design.css">
+    <link rel="stylesheet" href="~/Content/brand-icons.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+    <!--[if lt IE 9]>
+    <script src="../../../global/vendor/html5shiv/html5shiv.min.js"></script>
+    <![endif]-->
+    <!--[if lt IE 10]>
+    <script src="../../../global/vendor/media-match/media.match.min.js"></script>
+    <script src="../../../global/vendor/respond/respond.min.js"></script>
+    <![endif]-->
+    <!-- Scripts -->
+    <script src="~/Scripts/breakpoints.js"></script>
+    <script>Breakpoints();</script>
+</head>
+<body class="animsition page-login-v2 layout-full page-dark">
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <!-- Page -->
+    <div class="page" data-animsition-in="fade-in" data-animsition-out="fade-out">
+        <div class="page-content">
+            <div class="page-brand-info">
+                <div class="brand">
+                    <img class="brand-img" src="~/Images/White_Gray_Logo.png" style="max-width:200px" alt="...">
+                    <h2 class="brand-text font-size-40">Financial Portal</h2>
+                </div>
+                
+                <p class="font-size-30">
+                    Sign into your account to access your dashboard for the Financial Portal!
+                </p>
+            </div>
+
+            <div class="page-login-main">
+                @*<div class="brand hidden-md-up">
+                    <img class="brand-img" src="~/Images/logo-colored@2x.png" alt="...">
+                    <h3 class="brand-text font-size-40">Remark</h3>
+                </div>*@
+                <h2 style="color:red">This Site Is Currently</h2>
+                <h2 style="color:red">In Development Stage.</h2>
+                <h3 class="font-size-24">Sign In</h3>
+
+
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @*<form method="post" action="login-v2.html" autocomplete="off">*@
+                    <div class="form-group form-material floating" data-plugin="formMaterial">
+                        <input type="email" class="form-control empty" id="inputEmail" name="Email">
+                        <label class="floating-label" for="inputEmail">Email</label>
+                    </div>
+                    <div class="form-group form-material floating" data-plugin="formMaterial">
+                        <input type="password" class="form-control empty" id="inputPassword" name="Password">
+                        <label class="floating-label" for="inputPassword">Password</label>
+                    </div>
+                    <div class="form-group clearfix">
+                        <a class="float-right" href="@Url.Action("ForgotPassword", "Account")">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+                    @*</form>*@
+                }
+
+                <p>No account? <a href="@Url.Action("Register", "Account")">Sign Up</a></p>
+
+                <footer class="page-copyright">
+                    <p>WEBSITE BY Creation Studio</p>
+                    <p>WEBSITE CUSTOMIZED BY Travis Wright</p>
+                    <p>© 2018. All RIGHT RESERVED.</p>
+                    @*<div class="social">
+                <a class="btn btn-icon btn-round social-twitter mx-5" href="javascript:void(0)">
+                    <i class="icon bd-twitter" aria-hidden="true"></i>
+                </a>
+                <a class="btn btn-icon btn-round social-facebook mx-5" href="javascript:void(0)">
+                    <i class="icon bd-facebook" aria-hidden="true"></i>
+                </a>
+                <a class="btn btn-icon btn-round social-google-plus mx-5" href="javascript:void(0)">
+                    <i class="icon bd-google-plus" aria-hidden="true"></i>
+                </a>
+            </div>*@
+                </footer>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Page -->
+    <!-- Core  -->
+    <script src="~/Scripts/babel-external-helpers.js"></script>
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/animsition.js"></script>
+    <script src="~/Scripts/jquery.mousewheel.js"></script>
+    <script src="~/Scripts/jquery-asScrollbar.js"></script>
+    <script src="~/Scripts/jquery-asScrollable.js"></script>
+    <script src="~/Scripts/jquery-asHoverScroll.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+
+    <!-- Plugins -->
+    <script src="~/Scripts/switchery.js"></script>
+    <script src="~/Scripts/intro.js"></script>
+    <script src="~/Scripts/screenfull.js"></script>
+    <script src="~/Scripts/jquery-slidePanel.js"></script>
+    <script src="~/Scripts/jquery.placeholder.js"></script>
+
+    <!-- Scripts -->
+    <script src="~/Scripts/Component.js"></script>
+    <script src="~/Scripts/Plugin.js"></script>
+    <script src="~/Scripts/Base.js"></script>
+    <script src="~/Scripts/Config.js"></script>
+
+
+    <script src="~/Scripts/Menubar.js"></script>
+    <script src="~/Scripts/GridMenu.js"></script>
+    <script src="~/Scripts/Sidebar.js"></script>
+    <script src="~/Scripts/PageAside.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/colors.js"></script>
+    <script src="~/Scripts/tour.js"></script>
+    @*<script>Config.set('assets', '../assets');</script>*@
+
+
+    <!-- Page -->
+    <script src="~/Scripts/Site.js"></script>
+    <script src="~/Scripts/asscrollable.js"></script>
+    <script src="~/Scripts/slidepanel.js"></script>
+    <script src="~/Scripts/Plugins/switchery.js"></script>
+    <script src="~/Scripts/jquery-placeholder.js"></script>
+    <script src="~/Scripts/material.js"></script>
+
+
+    <script>
+        (function (document, window, $) {
+            'use strict';
+
+            var Site = window.Site;
+            $(document).ready(function () {
+                Site.run();
+            });
+        })(document, window, jQuery);
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+@*@{
+    ViewBag.Title = "Log in";
+}
+
+<h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <div class="checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Log in" class="btn btn-default" />
+                    </div>
+                </div>
+                <p>
+                    @Html.ActionLink("Register as a new user", "Register")
+                </p>
+                //Enable this once you have account confirmation enabled for password reset functionality
+                <p>
+                    @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                </p>
+            }
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@

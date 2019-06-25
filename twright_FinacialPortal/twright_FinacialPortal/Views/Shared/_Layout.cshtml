@@ -1,0 +1,244 @@
+﻿@using Microsoft.AspNet.Identity
+@using twright_FinacialPortal.Models
+
+<!DOCTYPE html>
+<html class="no-js css-menubar" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description" content="bootstrap material admin template">
+    <meta name="author" content="">
+
+    <title>Financial Portal | TWright</title>
+
+    <link rel="apple-touch-icon" href="~/Images/apple-touch-icon.png">
+    <link rel="shortcut icon" href="~/Images/favicon.ico">
+    <link rel="icon" type="image/png" href="~/favicon.png">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/bootstrap-extend.min.css">
+    <link rel="stylesheet" href="~/Content/site.min.css">
+
+    <!-- Plugins -->
+    <link rel="stylesheet" href="~/Content/animsition.css">
+    <link rel="stylesheet" href="~/Content/asScrollable.css">
+    <link rel="stylesheet" href="~/Content/switchery.css">
+    <link rel="stylesheet" href="~/Content/introjs.css">
+    <link rel="stylesheet" href="~/Content/slidePanel.css">
+    <link rel="stylesheet" href="~/Content/flag-icon.css">
+    <link rel="stylesheet" href="~/Content/waves.css">
+    <link rel="stylesheet" href="~/Content/chartist.css">
+    <link rel="stylesheet" href="~/Content/jquery-jvectormap.css">
+    <link rel="stylesheet" href="~/Content/chartist-plugin-tooltip.css">
+    <link rel="stylesheet" href="~/Content/v1.css">
+    @*<link rel="stylesheet" href="../../../global/vendor/morris/morris.css">*@
+
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="~/Content/material-design.css">
+    <link rel="stylesheet" href="~/Content/brand-icons.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,300italic'>
+
+    <!--[if lt IE 9]>
+    <script src="../../global/vendor/html5shiv/html5shiv.min.js"></script>
+    <![endif]-->
+    <!--[if lt IE 10]>
+    <script src="../../global/vendor/media-match/media.match.min.js"></script>
+    <script src="../../global/vendor/respond/respond.min.js"></script>
+    <![endif]-->
+    <!-- Scripts -->
+    <script src="~/Scripts/breakpoints.js"></script>
+    <script>Breakpoints();</script>
+
+    <link href="~/Content/morris.css" rel="stylesheet" />
+</head>
+<body class="animsition dashboard">
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega" style="background-color:orange" role="navigation">
+
+        @*<div class="navbar-header">
+                <button type="button" class="navbar-toggler hamburger hamburger-close navbar-toggler-left hided"
+                        data-toggle="menubar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="hamburger-bar"></span>
+                </button>
+                <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-collapse"
+                        data-toggle="collapse">
+                    <i class="icon md-more" aria-hidden="true"></i>
+                </button>
+                <div class="navbar-brand navbar-brand-center site-gridmenu-toggle" data-toggle="gridmenu">
+                    <img class="navbar-brand-logo" src="~/Images/White_Gray_Logo.png" title="Financial Portal">
+                    <span class="navbar-brand-text hidden-xs-down"> Financial Portal</span>
+                </div>
+                <button type="button" class="navbar-toggler collapsed" data-target="#site-navbar-search"
+                        data-toggle="collapse">
+                    <span class="sr-only">Toggle Search</span>
+                    <i class="icon md-search" aria-hidden="true"></i>
+                </button>
+            </div>*@
+
+        <div class="navbar-container container-fluid" style="background-color:orange">
+            <!-- Navbar Collapse -->
+            <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+                <!-- Navbar Toolbar -->
+
+                <div class="navbar-brand navbar-brand-center site-gridmenu-toggle" data-toggle="gridmenu">
+                    <img class="navbar-brand-logo" src="~/Images/White_Gray_Logo.png" title="Financial Portal">
+                    <span class="navbar-brand-text hidden-xs-down"> Financial Portal</span>
+                </div>
+                <!-- End Navbar Toolbar -->
+                <!-- Navbar Toolbar Right -->
+                <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+                    @{
+                        ApplicationUser user = null;
+
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            var userId = User.Identity.GetUserId();
+                            var db = new ApplicationDbContext();
+                            user = db.Users.Find(userId);
+                        }
+                    }
+                    <li class="nav-item dropdown">
+                        <a class="nav-link navbar-avatar" data-toggle="dropdown" href="#" aria-expanded="false"
+                           data-animation="scale-up" role="button">
+                            <span class="avatar avatar-online">
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <img src=@Url.Content(user.ProfilePic) />
+                                }
+                            </span>
+                        </a>
+                        <div class="dropdown-menu" role="menu">
+                            <a class="dropdown-item" href=@Url.Action("Dashboard","Households") role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Household Dashboard</a>
+                            <a class="dropdown-item" href=@Url.Action("EditProfile","User") role="menuitem"><i class="icon md-account" aria-hidden="true"></i> Profile</a>
+                            <a class="dropdown-item" href=@Url.Action("ChangePassword","Manage") role="menuitem"><i class="icon md-account" aria-hidden="true"></i>Change Password</a>
+                            <a class="dropdown-item" href=@Url.Action("Edit","Household") role="menuitem"><i class="icon md-settings" aria-hidden="true"></i> House Settings</a>
+                            <div class="dropdown-divider" role="presentation"></div>
+                            @using (Html.BeginForm("Logoff", "Account", FormMethod.Post, new { id = "frmLogOff" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <ul class="nav pull-right top-menu">
+
+                                    <li>
+                                        <a id="LogOff" class="dropdown-item dropdown-item"><i class="icon md-power" aria-hidden="true"></i>Logout</a>
+                                    </li>
+
+                                </ul>
+
+
+
+                            }
+
+                        </div>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- End Navbar Collapse -->
+            <!-- Site Navbar Seach -->
+            <!-- End Site Navbar Seach -->
+        </div>
+    </nav>
+
+
+    <!-- Page -->
+    <div class="page" style="margin-left:0px !important">
+        <div class="page-content container-fluid">
+            <div class="row" data-plugin="matchHeight" data-by-row="true">
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Page -->
+    <!-- Footer -->
+    <footer class="site-footer" style="margin-left:0px !important">
+        <div class="site-footer-legal">© 2018 <a href="http://themeforest.net/item/remark-responsive-bootstrap-admin-template/11989202">Remark</a><a href="https://twright-portfolio.azurewebsites.net"> | Customized By Travis Wright</a></div>
+        <div class="site-footer-right">
+            Crafted with <i class="red-600 icon md-favorite"></i> by <a href="https://themeforest.net/user/creation-studio">Creation Studio</a>
+        </div>
+    </footer>
+    <!-- Core  -->
+    <script src="~/Scripts/babel-external-helpers.js"></script>
+    <script src="~/Scripts/jquery.js"></script>
+    <script src="~/Scripts/popper.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/animsition.js"></script>
+    <script src="~/Scripts/jquery.mousewheel.js"></script>
+    <script src="~/Scripts/jquery-asScrollbar.js"></script>
+    <script src="~/Scripts/jquery-asScrollable.js"></script>
+    <script src="~/Scripts/jquery-asHoverScroll.js"></script>
+    <script src="~/Scripts/waves.js"></script>
+
+    <!-- Plugins -->
+    <script src="~/Scripts/switchery.js"></script>
+    <script src="~/Scripts/intro.js"></script>
+    <script src="~/Scripts/screenfull.js"></script>
+    <script src="~/Scripts/jquery-slidePanel.js"></script>
+    @*<script src="~/Scripts/chartist.min.js"></script>*@
+    <script src="~/Scripts/chartist.js"></script>
+    <script src="~/Scripts/chartist-plugin-tooltip.js"></script>
+    @*<script src="~/Scripts/jquery-jvectormap.min.js"></script>*@
+    <script src="~/Scripts/jquery-jvectormap.js"></script>
+    <script src="~/Scripts/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/Scripts/jquery.matchHeight-min.js"></script>
+    <script src="~/Scripts/jquery.peity.min.js"></script>
+    @*<script src="../../../global/vendor/raphael/raphael.min.js"></script>
+        <script src="../../../global/vendor/morris/morris.min.js"></script>*@
+    @*<script src="~/Scripts/raphael.min.js"></script>
+        <script src="~/Scripts/morris.min.js"></script>*@
+
+
+    <!-- Scripts -->
+    <script src="~/Scripts/Component.js"></script>
+    <script src="~/Scripts/Plugin.js"></script>
+    <script src="~/Scripts/Base.js"></script>
+    <script src="~/Scripts/Config.js"></script>
+
+
+    <script src="~/Scripts/Menubar.js"></script>
+    <script src="~/Scripts/GridMenu.js"></script>
+    <script src="~/Scripts/Sidebar.js"></script>
+    <script src="~/Scripts/PageAside.js"></script>
+    <script src="~/Scripts/menu.js"></script>
+    <script src="~/Scripts/colors.js"></script>
+    <script src="~/Scripts/tour.js"></script>
+    @*<script>Config.set('assets', '../assets');</script>*@
+
+
+    <!-- Page -->
+    <script src="~/Scripts/Site.js"></script>
+    <script src="~/Scripts/asscrollable.js"></script>
+    <script src="~/Scripts/slidepanel.js"></script>
+    <script src="~/Scripts/Plugins/switchery.js"></script>
+    <script src="~/Scripts/matchheight.js"></script>
+    <script src="~/Scripts/jvectormap.js"></script>
+    <script src="~/Scripts/peity.js"></script>
+    <script src="~/Scripts/v1.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+
+    <script>
+        $("#LogOff").click(function () {
+            $("#frmLogOff").submit();
+        });
+    </script>
+
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+
+

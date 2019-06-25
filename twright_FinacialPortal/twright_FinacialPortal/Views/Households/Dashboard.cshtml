@@ -1,0 +1,468 @@
+﻿@using twright_FinacialPortal.Models
+@using Microsoft.AspNet.Identity
+@model twright_FinacialPortal.Models.Household
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h1>Dashboard for "@Model.Name"</h1>
+<hr />
+<hr />
+<!--Need to customize dashboard with buttons, widget areas, charts, etc-->
+@{
+    var db = new ApplicationDbContext();
+}
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="col-md-12 box0">
+            <p class="text-center" style="font-size:28px; font-weight:bold; color:black">To start adding Transactions you must first add a Bank Account!</p>
+
+            <div class="box1">
+                <i class="fas fa-university fa-6x"></i>
+                <h3>@Html.ActionLink("Add Bank Account", "Create", "BankAccounts", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })</h3>
+            </div>
+            <p class="text-justify"><h5>To add Bank Account(s) click the button above.</h5></p>
+        </div>
+
+        @if (Model.BankAccounts.Count() > 0)
+        {
+            <div class="col-md-12 box0">
+                <div class="box1">
+                    <span class="li_cloud"></span>
+                    <h3>
+                        @Html.ActionLink("Add Budget Category", "Create", "BudgetCategories", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                    </h3>
+                </div>
+                <p class="text-justify"><h5>Select the button above to add a Budget Category to help you stay organized. </h5></p>
+            </div>
+
+        }
+
+
+        <div class="col-md-12 box0">
+            @if (Model.BudgetCategories.Count() > 0)
+            {
+                <div class="box1">
+                    <span class="li_stack"></span>
+                    <h3>
+                        @Html.ActionLink("Add Budget Category Items", "Create", "BudgetCategoryItems", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                    </h3>
+                </div>
+                <p class="text-justify"><h5>Select the button above to add Items to the Budget Category.</h5></p>
+
+            }
+
+
+        </div>
+
+        @if (Model.BudgetCategories.SelectMany(b => b.BudgetCategoryItems).Count() > 0 && Model.BankAccounts.Count() > 0)
+        {
+
+            <div class="col-md-12 box0">
+                <div class="box1">
+                    <span class="li_data"></span>
+                    <h3>
+                        @Html.ActionLink("Add Transaction", "Create", "Transactions", new { id = Model.Id }, new { @class = "btn btn-warning btn-block" })
+                    </h3>
+                </div>
+                <p class="text-justify"><h5>Select the button above to add Transactions.</h5></p>
+            </div>
+
+        }
+
+        <hr />
+        <hr />
+
+
+        @if (User.IsInRole("HeadofHousehold"))
+        {
+
+            <div class="col-md-12 box0">
+                @Html.ActionLink("Invite Member", "InviteMember", null, new { @class = "btn btn-danger btn-block" })
+            </div>
+
+        }
+
+        @if (User.IsInRole("Member"))
+        {
+            <div class="col-md-12 box0">
+                @Html.ActionLink("Leave Household", "LeaveHousehold", null, new { @class = "btn btn-danger btn-block" })
+            </div>
+        }
+
+
+
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="example">
+                    <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true"
+                         role="tablist">
+                        <div class="panel">
+                            <div class="panel-heading" id="exampleHeadingDefaultOne" role="tab">
+                                <a class="panel-title" data-toggle="collapse" href="#exampleCollapseDefaultOne"
+                                   data-parent="#exampleAccordionDefault" aria-expanded="true"
+                                   aria-controls="exampleCollapseDefaultOne">
+                                    Banks Accounts
+                                </a>
+                            </div>
+                            <div class="panel-collapse collapse hide" id="exampleCollapseDefaultOne" aria-labelledby="exampleHeadingDefaultOne"
+                                 role="tabpanel">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayName("Account Name")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Account Type")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Current Balance")
+                                            </th>
+                                            <th></th>
+                                        </tr>
+
+                                        @foreach (var account in Model.BankAccounts)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => account.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => account.AccountType)
+                                                </td>
+                                                <td>
+                                                    $@Html.DisplayFor(modelItem => account.CurrentBalance)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Details", "Details", new { id = account.Id })
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="example">
+                    <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true"
+                         role="tablist">
+                        <div class="panel">
+                            <div class="panel-heading" id="exampleHeadingDefaultTwo" role="tab">
+                                <a class="panel-title" data-toggle="collapse" href="#exampleCollapseDefaultTwo"
+                                   data-parent="#exampleAccordionDefault" aria-expanded="true"
+                                   aria-controls="exampleCollapseDefaultTwo">
+                                    Categories
+                                </a>
+                            </div>
+                            <div class="panel-collapse collapse hide" id="exampleCollapseDefaultTwo" aria-labelledby="exampleHeadingDefaultTwo"
+                                 role="tabpanel">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayName("Category Name")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Target Amount")
+                                            </th>
+                                            <th></th>
+                                        </tr>
+
+                                        @foreach (var category in Model.BudgetCategories)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => category.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => category.TargetAmount)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink("Details", "Details", new { id = category.Id })
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="example">
+                    <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true"
+                         role="tablist">
+                        <div class="panel">
+                            <div class="panel-heading" id="exampleHeadingDefaultFive" role="tab">
+                                <a class="panel-title" data-toggle="collapse" href="#exampleCollapseDefaultFive"
+                                   data-parent="#exampleAccordionDefault" aria-expanded="true"
+                                   aria-controls="exampleCollapseDefaultFive">
+                                    Transactions
+                                </a>
+                            </div>
+                            <div class="panel-collapse collapse hide" id="exampleCollapseDefaultFive" aria-labelledby="exampleHeadingDefaultFive"
+                                 role="tabpanel">
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <tr>
+                                            <th>
+                                                @Html.DisplayName("Date Entered")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Transaction Type")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Payee")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Amount")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Memo")
+                                            </th>
+                                            <th>
+                                                @Html.DisplayName("Reconciled")
+                                            </th>
+                                        </tr>
+
+                                        @foreach (var transaction in Model.BankAccounts.SelectMany(b => b.Transactions.Where(t => t.Entered > DateTimeOffset.UtcNow.ToLocalTime().AddMonths(-1))).OrderByDescending(t => t.Entered))
+
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => transaction.Entered)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => transaction.TransactionType)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => transaction.Payee)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => transaction.Amount)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => transaction.Memo)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => transaction.Reconciled)
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="example">
+                    <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true"
+                         role="tablist">
+                        <div class="panel">
+                            <div class="panel-heading" id="exampleHeadingDefaultSix" role="tab">
+                                <a class="panel-title" data-toggle="collapse" href="#exampleCollapseDefaultSix"
+                                   data-parent="#exampleAccordionDefault" aria-expanded="true"
+                                   aria-controls="exampleCollapseDefaultSix">
+                                    Members
+                                </a>
+                            </div>
+                            <div class="panel-collapse collapse hide" id="exampleCollapseDefaultSix" aria-labelledby="exampleHeadingDefaultSix"
+                                 role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        @foreach (var member in Model.Members)
+                                        {
+                                            <div class="col-md-3">
+                                                <!-- Widget User list -->
+                                                <div class="card" id="widgetUserList">
+                                                    <div class="card-header cover overlay">
+                                                        <img class="cover-image h-200" src="~/Images/dashboard-header.jpg"
+                                                             alt="..." />
+                                                        <div class="overlay-panel vertical-align overlay-background">
+                                                            <div class="vertical-align-middle">
+                                                                <a class="avatar avatar-100 float-left mr-20" href="javascript:void(0)">
+                                                                    <img src="@member.ProfilePic">
+                                                                </a>
+                                                                <div class="float-left">
+                                                                    <div class="font-size-20">@member.FirstName @member.LastName</div>
+                                                                    <p class="mb-20 text-nowrap">
+                                                                        <span class="text-break">@member.Email</span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- End Widget User list -->
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="example">
+                    <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true"
+                         role="tablist">
+                        <div class="panel">
+                            <div class="panel-heading" id="exampleHeadingDefaultSeven" role="tab">
+                                <a class="panel-title" data-toggle="collapse" href="#exampleCollapseDefaultSeven"
+                                   data-parent="#exampleAccordionDefault" aria-expanded="true"
+                                   aria-controls="exampleCollapseDefaultSeven">
+                                    Chart
+                                </a>
+                            </div>
+                            <div class="panel-collapse collapse hide" id="exampleCollapseDefaultSeven" aria-labelledby="exampleHeadingDefaultSeven"
+                                 role="tabpanel">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="morrisBar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="example">
+                    <div class="panel-group" id="exampleAccordionDefault" aria-multiselectable="true"
+                         role="tablist">
+                        <div class="panel">
+                            <div class="panel-heading" id="exampleHeadingDefaultFour" role="tab">
+                                <a class="panel-title" data-toggle="collapse" href="#exampleCollapseDefaultFour"
+                                   data-parent="#exampleAccordionDefault" aria-expanded="true"
+                                   aria-controls="exampleCollapseDefaultFour">
+                                    Notifications
+                                </a>
+                            </div>
+                            <div class="panel-collapse collapse hide" id="exampleCollapseDefaultFour" aria-labelledby="exampleHeadingDefaultFour"
+                                 role="tabpanel">
+                                <div class="panel-body">
+                                    @foreach (var notification in Model.Notifications.OrderByDescending(t => t.Created))
+                                    {
+                                        <div>
+                                            <h5>Notification Date</h5>
+                                            <p>@notification.Created</p>
+                                            <h5>Notification Subject</h5>
+                                            <p>@notification.Subject</p>
+                                            <h5>Notification Description</h5>
+                                            <p>@notification.NotificationBody</p>
+                                        </div>
+                                        <hr />
+                                        <hr />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script>
+        $.post('/Dashboard/BuildBudgetData', function (morrisBarData) {
+            new Morris.Bar({
+                resize: true,
+                element: 'morrisBar',
+                data: morrisBarData,
+                xkey: 'budget',
+                ykeys: ['target', 'actual'],
+                labels: ['Target', 'Actual'],
+                barColors: ['#0088cc', '#2baab1'],
+                gridTextSize: 8,
+            });
+        });
+
+
+    </script>
+
+    @*<script>
+            (function () {
+                var data = [{
+                    "xScale": "ordinal",
+                    "comp": [],
+                    "main": [{ "className": ".main.l1", "data": [{ "y": 15, "x": "2012-11-19T00:00:00" }, { "y": 11, "x": "2012-11-20T00:00:00" }, { "y": 8, "x": "2012-11-21T00:00:00" }, { "y": 10, "x": "2012-11-22T00:00:00" }, { "y": 1, "x": "2012-11-23T00:00:00" }, { "y": 6, "x": "2012-11-24T00:00:00" }, { "y": 8, "x": "2012-11-25T00:00:00" }] }, { "className": ".main.l2", "data": [{ "y": 29, "x": "2012-11-19T00:00:00" }, { "y": 33, "x": "2012-11-20T00:00:00" }, { "y": 13, "x": "2012-11-21T00:00:00" }, { "y": 16, "x": "2012-11-22T00:00:00" }, { "y": 7, "x": "2012-11-23T00:00:00" }, { "y": 18, "x": "2012-11-24T00:00:00" }, { "y": 8, "x": "2012-11-25T00:00:00" }] }], "type": "line-dotted", "yScale": "linear"
+                }, { "xScale": "ordinal", "comp": [], "main": [{ "className": ".main.l1", "data": [{ "y": 12, "x": "2012-11-19T00:00:00" }, { "y": 18, "x": "2012-11-20T00:00:00" }, { "y": 8, "x": "2012-11-21T00:00:00" }, { "y": 7, "x": "2012-11-22T00:00:00" }, { "y": 6, "x": "2012-11-23T00:00:00" }, { "y": 12, "x": "2012-11-24T00:00:00" }, { "y": 8, "x": "2012-11-25T00:00:00" }] }, { "className": ".main.l2", "data": [{ "y": 29, "x": "2012-11-19T00:00:00" }, { "y": 33, "x": "2012-11-20T00:00:00" }, { "y": 13, "x": "2012-11-21T00:00:00" }, { "y": 16, "x": "2012-11-22T00:00:00" }, { "y": 7, "x": "2012-11-23T00:00:00" }, { "y": 18, "x": "2012-11-24T00:00:00" }, { "y": 8, "x": "2012-11-25T00:00:00" }] }], "type": "cumulative", "yScale": "linear" }, { "xScale": "ordinal", "comp": [], "main": [{ "className": ".main.l1", "data": [{ "y": 12, "x": "2012-11-19T00:00:00" }, { "y": 18, "x": "2012-11-20T00:00:00" }, { "y": 8, "x": "2012-11-21T00:00:00" }, { "y": 7, "x": "2012-11-22T00:00:00" }, { "y": 6, "x": "2012-11-23T00:00:00" }, { "y": 12, "x": "2012-11-24T00:00:00" }, { "y": 8, "x": "2012-11-25T00:00:00" }] }, { "className": ".main.l2", "data": [{ "y": 29, "x": "2012-11-19T00:00:00" }, { "y": 33, "x": "2012-11-20T00:00:00" }, { "y": 13, "x": "2012-11-21T00:00:00" }, { "y": 16, "x": "2012-11-22T00:00:00" }, { "y": 7, "x": "2012-11-23T00:00:00" }, { "y": 18, "x": "2012-11-24T00:00:00" }, { "y": 8, "x": "2012-11-25T00:00:00" }] }], "type": "bar", "yScale": "linear" }];
+                var order = [0, 1, 0, 2],
+                    i = 0,
+                    xFormat = d3.time.format('%A'),
+                    chart = new xChart('line-dotted', data[order[i]], '#chart', {
+                        axisPaddingTop: 5,
+                        dataFormatX: function (x) {
+                            return new Date(x);
+                        },
+                        tickFormatX: function (x) {
+                            return xFormat(x);
+                        },
+                        timing: 1250
+                    }),
+                    rotateTimer,
+                    toggles = d3.selectAll('.multi button'),
+                    t = 3500;
+
+                function updateChart(i) {
+                    var d = data[i];
+                    chart.setData(d);
+                    toggles.classed('toggled', function () {
+                        return (d3.select(this).attr('data-type') === d.type);
+                    });
+                    return d;
+                }
+
+                toggles.on('click', function (d, i) {
+                    clearTimeout(rotateTimer);
+                    updateChart(i);
+                });
+
+                function rotateChart() {
+                    i += 1;
+                    i = (i >= order.length) ? 0 : i;
+                    var d = updateChart(order[i]);
+                    rotateTimer = setTimeout(rotateChart, t);
+                }
+                rotateTimer = setTimeout(rotateChart, t);
+            }());
+        </script>*@
+}

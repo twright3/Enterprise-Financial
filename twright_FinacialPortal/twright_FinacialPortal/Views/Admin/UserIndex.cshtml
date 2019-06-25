@@ -1,0 +1,85 @@
+﻿@using twright_FinacialPortal.Models
+@using twright_FinacialPortal.Helpers
+@using twright_FinacialPortal.ViewModels
+
+@model IEnumerable<UserViewModel>
+
+@{
+    ViewBag.Title = "UserIndex";
+}
+
+<h2>UserIndex</h2>
+
+@*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+<table id="DataTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("First Name")
+            </th>
+            <th>
+                @Html.DisplayName("Last Name")
+            </th>
+            <th>
+                @Html.DisplayName("Email")
+            </th>
+            <th>
+                @Html.DisplayName("Nickname")
+            </th>
+            <th>
+                @Html.DisplayName("Role")
+            </th>
+            <th>
+                @Html.DisplayName("Links...")
+            </th>
+        </tr>
+    </thead>
+
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nickname)
+            </td>
+            <td>
+                @{
+                    var roleHelper = new RoleHelper();
+                    foreach (var role in roleHelper.ListEmailRoles(item.Email))
+                    {
+                        @role <br />
+                    }
+
+                }
+
+            </td>
+
+
+
+
+
+
+
+            <td>
+
+
+                @Html.ActionLink("Assign Roles", "ManageRoles", "Admin", new { userId = item.Id }, null)
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Lobby";
+}
+
+<h2>Lobby</h2>
+
+@if (User.IsInRole("Member"))
+{
+    <a href="@Url.Action("Create", "Households")" class="pull-right btn btn-primary">+ Create Home</a>
+}
+
+
+<!--Join Household via code?-->
